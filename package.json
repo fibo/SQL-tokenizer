@@ -4,8 +4,9 @@
   "description": "analyzes SQL and converts it into a list of tokens",
   "main": "src/sql-tokenizer.js",
   "scripts": {
+    "flow": "flow",
     "lint": "standa",
-    "test": "NODE_PATH=src tape test/*.js"
+    "test": "NODE_PATH=src tape -r babel-register test/*.js"
   },
   "pre-commit": [
     "lint"
@@ -18,6 +19,12 @@
     "SQL",
     "tokenizer"
   ],
+  "standa": {
+    "parser": "babel-eslint",
+    "plugins": [
+      "flowtype"
+    ]
+  },
   "author": "Gianluca Casati (http://g14n.info)",
   "license": "MIT",
   "bugs": {
@@ -25,6 +32,12 @@
   },
   "homepage": "https://github.com/SQL-JSON/tokenizer#readme",
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^8.2.1",
+    "babel-preset-flow": "^6.23.0",
+    "babel-register": "^6.26.0",
+    "eslint-plugin-flowtype": "^2.42.0",
+    "flow-bin": "^0.64.0",
     "pre-commit": "^1.2.2",
     "standa": "^1.4.0",
     "tape": "^4.8.0"

@@ -1,5 +1,5 @@
 function sqlTokenizer () {
-  return function (sql) {
+  return function (sql: string): Array<string> {
     return [sql]
   }
 }
