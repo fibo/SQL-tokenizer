@@ -1,0 +1,32 @@
+{
+  "name": "sql-tokenizer",
+  "version": "0.0.0",
+  "description": "analyzes SQL and converts it into a list of tokens",
+  "main": "src/sql-tokenizer.js",
+  "scripts": {
+    "lint": "standa",
+    "test": "NODE_PATH=src tape test/*.js"
+  },
+  "pre-commit": [
+    "lint"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SQL-JSON/tokenizer.git"
+  },
+  "keywords": [
+    "SQL",
+    "tokenizer"
+  ],
+  "author": "Gianluca Casati (http://g14n.info)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SQL-JSON/tokenizer/issues"
+  },
+  "homepage": "https://github.com/SQL-JSON/tokenizer#readme",
+  "devDependencies": {
+    "pre-commit": "^1.2.2",
+    "standa": "^1.4.0",
+    "tape": "^4.8.0"
+  }
+}
