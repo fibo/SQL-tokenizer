@@ -6,8 +6,9 @@ const tokenize = require('sql-tokenizer')()
 
 test('tokenize', (t) => {
   t.deepEqual(tokenize('select'), ['select'])
+  t.deepEqual(tokenize("select 'hello world'"), ['select', ' ', "'hello world'"], 'single quotes')
   /*
-  t.deepEqual(tokenize('  select   1'), ['select', '1'], 'left trim')
+  t.deepEqual(tokenize('  select   1'), ['  ', 'select', '   ', '1'], 'spaces')
   t.deepEqual(tokenize('select * from sales '), ['select', '*', 'from', 'sales'], 'right trim')
   t.deepEqual(tokenize("select 'hello'"), ['select', "'hello'"], 'single quotes')
   t.deepEqual(tokenize("  select  'x'   as  y"), ['select', "'x'", 'as', 'y'], 'internal space chars')
