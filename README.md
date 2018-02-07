@@ -18,8 +18,15 @@ npm install sql-tokenizer
 
 Create a *tokenize* function.
 
-```javscript
+```javascript
 const tokenize = require('sql-tokenizer')()
+```
+
+Turn SQL statement into tokens.
+
+```javascript
+tokenize('select * from revenue')
+// ['select', ' ', '*', ' ', 'from', ' ', 'revenue']
 ```
 
 ## License

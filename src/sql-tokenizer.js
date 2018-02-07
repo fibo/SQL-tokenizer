@@ -57,9 +57,22 @@ function sqlTokenizer () {
         // TODO let isDoubleQuoted = firstChar === '"'
         let isSpaceLikeToken = isSpaceLikeChar(firstChar)
         let currentToken = ''
+        let insideComment = false
 
         currentValue.split('').forEach(function (currentChar, index, array) {
           const isLastChar = index === array.length - 1
+          const isNotLastChar = (index < array.length - 1)
+
+          const currentTwoChars = array.slice(index, index + 2).join('')
+          const isDashComment = isNotLastChar && currentTwoChars === '--'
+
+          if (insideComment) return
+
+          if (isDashComment) {
+            // TODO handle multiple dash comments on many rows
+            tokens.push(array.slice(index, array.length).join(''))
+            insideComment = true
+          }
 
           if (isSpaceLikeToken) {
             if (isSpaceLikeChar(currentChar)) {
