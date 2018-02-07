@@ -7,12 +7,13 @@ const tokenize = require('sql-tokenizer')()
 test('tokenize', (t) => {
   t.deepEqual(tokenize('select'), ['select'])
   t.deepEqual(tokenize("select 'hello world'"), ['select', ' ', "'hello world'"], 'single quotes')
-  /*
   t.deepEqual(tokenize('  select   1'), ['  ', 'select', '   ', '1'], 'spaces')
-  t.deepEqual(tokenize('select * from sales '), ['select', '*', 'from', 'sales'], 'right trim')
-  t.deepEqual(tokenize("select 'hello'"), ['select', "'hello'"], 'single quotes')
-  t.deepEqual(tokenize("  select  'x'   as  y"), ['select', "'x'", 'as', 'y'], 'internal space chars')
+  t.deepEqual(tokenize(`select
+1`), ['select', '\n', '1'], 'newline')
+  /*
   t.deepEqual(tokenize('select 1,2'), ['select', '1', ',', '2'], 'commas')
+  t.deepEqual(tokenize('select * from sales '), ['select', '*', 'from', 'sales'], 'right trim')
+  t.deepEqual(tokenize("  select  'x'   as  y"), ['select', "'x'", 'as', 'y'], 'internal space chars')
   t.deepEqual(tokenize('group by'), ['group by'], 'GROUP BY')
   t.deepEqual(tokenize('ORDER by'), ['ORDER by'], 'ORDER BY')
   t.deepEqual(tokenize('COUNT(*)'), ['COUNT', '(', '*', ')'], 'COUNT(*)')
