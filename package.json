@@ -6,6 +6,7 @@
   "scripts": {
     "flow": "flow",
     "lint": "standa",
+    "postversion": "npm publish; git push origin v${npm_package_version}; git push origin master",
     "test": "NODE_PATH=src tape -r babel-register test/*.js"
   },
   "pre-commit": [
@@ -41,5 +42,8 @@
     "pre-commit": "^1.2.2",
     "standa": "^1.4.0",
     "tape": "^4.8.0"
+  },
+  "dependencies": {
+    "sql92-keywords": "^1.0.0"
   }
 }

@@ -1,5 +1,11 @@
+// const keywords = require('sql92-keywords')
+
+const isNewLineChar = (x) => {
+  return (x === '\n') || (x === '\r')
+}
+
 const isSpaceLikeChar = (x) => {
-  return (x === '\n') || (x === '\r') || (x === '\t') || (x === ' ')
+  return isNewLineChar(x) || (x === '\t') || (x === ' ')
 }
 
 function sqlTokenizer () {
@@ -57,7 +63,7 @@ function sqlTokenizer () {
         // TODO let isDoubleQuoted = firstChar === '"'
         let isSpaceLikeToken = isSpaceLikeChar(firstChar)
         let currentToken = ''
-        let insideComment = false
+        let insideDashComment = false
 
         currentValue.split('').forEach(function (currentChar, index, array) {
           const isLastChar = index === array.length - 1
@@ -66,12 +72,13 @@ function sqlTokenizer () {
           const currentTwoChars = array.slice(index, index + 2).join('')
           const isDashComment = isNotLastChar && currentTwoChars === '--'
 
-          if (insideComment) return
+          if (insideDashComment) return
 
           if (isDashComment) {
             // TODO handle multiple dash comments on many rows
             tokens.push(array.slice(index, array.length).join(''))
-            insideComment = true
+            insideDashComment = true
+            return
           }
 
           if (isSpaceLikeToken) {
