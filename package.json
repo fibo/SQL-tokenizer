@@ -2,12 +2,12 @@
   "name": "sql-tokenizer",
   "version": "0.0.0",
   "description": "analyzes SQL and converts it into a list of tokens",
-  "main": "src/sql-tokenizer.js",
+  "main": "src/index.js",
   "scripts": {
     "flow": "flow",
     "lint": "standa",
     "postversion": "npm publish; git push origin v${npm_package_version}; git push origin master",
-    "test": "NODE_PATH=src tape -r babel-register test/*.js"
+    "test": "tape -r babel-register test/*.js"
   },
   "pre-commit": [
     "lint"
@@ -37,6 +37,7 @@
     "babel-eslint": "^8.2.1",
     "babel-preset-flow": "^6.23.0",
     "babel-register": "^6.26.0",
+    "dot-editorconfig": "^1.1.0",
     "eslint-plugin-flowtype": "^2.42.0",
     "flow-bin": "^0.64.0",
     "pre-commit": "^1.2.2",
