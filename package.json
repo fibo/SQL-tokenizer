@@ -34,15 +34,15 @@
   "homepage": "https://github.com/SQL-JSON/tokenizer#readme",
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-eslint": "^8.2.1",
+    "babel-eslint": "^8.2.2",
     "babel-preset-flow": "^6.23.0",
     "babel-register": "^6.26.0",
     "dot-editorconfig": "^1.1.0",
-    "eslint-plugin-flowtype": "^2.42.0",
-    "flow-bin": "^0.64.0",
+    "eslint-plugin-flowtype": "^2.46.1",
+    "flow-bin": "^0.66.0",
     "pre-commit": "^1.2.2",
-    "standa": "^1.4.0",
-    "tape": "^4.8.0"
+    "standa": "^2.0.0",
+    "tape": "^4.9.0"
   },
   "dependencies": {
     "sql92-keywords": "^1.0.0"
