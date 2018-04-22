@@ -45,6 +45,6 @@
     "tape": "^4.9.0"
   },
   "dependencies": {
-    "sql92-operators": "^1.0.1"
+    "sql92-operators": "^1.0.2"
   }
 }

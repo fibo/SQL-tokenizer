@@ -38,13 +38,13 @@ tokenize("select 'O''Reilly' as \"book shelf\"")
 ```
 
 The *tokenizer* function accepts an optional array of operators, which defaults to [SQL92-operators].
-The following example shows how to extend the operators list.
+The following example shows how to extend the SQL92 operators list with PostgreSQL bitwise operators.
 
 ```javascript
 const sql92Operators = require('sql92-operators')
 const tokenizer = require('sql-tokenizer')
 
-const operators = sql92Operators.concat('>>')
+const operators = sql92Operators.concat(['&', '|', '#', '~' '>>', '<<'])
 
 const tokenize = tokenizer(operators)
 ```
