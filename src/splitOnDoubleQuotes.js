@@ -1,5 +1,5 @@
 function splitOnDoubleQuotes (sql: string): Array<string> {
-  let isInsideQuotes = sql.substring(0, 1) === '"'
+  let isInsideQuotes = sql[0] === '"'
 
   return sql.split('"').reduce((blocks, block, index, array) => {
     const isEmptyBlock = block === ''

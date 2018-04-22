@@ -9,15 +9,15 @@ test('SQL92 tokenizer', (t) => {
   t.deepEqual(tokenize('-- select 1'), ['-- select 1'], 'dash comment, whole line')
   t.deepEqual(tokenize(`select
 1`), ['select', '\n', '1'], 'newline')
-  /*
   t.deepEqual(tokenize('  select   1'), ['  ', 'select', '   ', '1'], 'spaces')
-  t.deepEqual(tokenize("select 'hello world'"), ['select', ' ', "'hello world'"], 'single quotes')
   t.deepEqual(tokenize('select * from sales '), ['select', ' ', '*', ' ', 'from', ' ', 'sales', ' '], 'select star')
-  t.deepEqual(tokenize('select 1 -- this is a comment'), ['select', ' ', '1', '-- this is a comment'], 'dash comment, partial line')
+  t.deepEqual(tokenize('select 1 -- this is a comment'), ['select', ' ', '1', ' ', '-- this is a comment'], 'dash comment, partial line')
+  t.deepEqual(tokenize("  select  'x'   as  y"), ['  ', 'select', '  ', "'x'", '   ', 'as', '  ', 'y'], 'many space chars')
+  /*
+  t.deepEqual(tokenize('select 1,2'), ['select', ' ', '1', ',', '2'], 'commas')
+  t.deepEqual(tokenize("select 'hello world'"), ['select', ' ', "'hello world'"], 'single quotes')
   t.deepEqual(tokenize(`select -- this is a comment
 1 -- on multiple lines`), ['select', ' ', '1', '-- this is a comment'], 'dash comment, partial line')
-  t.deepEqual(tokenize('select 1,2'), ['select', '1', ',', '2'], 'commas')
-  t.deepEqual(tokenize("  select  'x'   as  y"), ['select', "'x'", 'as', 'y'], 'internal space chars')
   t.deepEqual(tokenize('group by'), ['group by'], 'GROUP BY')
   t.deepEqual(tokenize('ORDER by'), ['ORDER by'], 'ORDER BY')
   t.deepEqual(tokenize('COUNT(*)'), ['COUNT', '(', '*', ')'], 'COUNT(*)')

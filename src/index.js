@@ -17,7 +17,8 @@ function sqlTokenizer (/* spec: { keywords: Array<string> } */) {
     ), []
   ).reduce(
     (tokens, block) => (
-      tokens.concat(isQuoted(block) ? block : splitOnSpaces(block))
+      tokens.concat(
+        (isComment(block) || isQuoted(block)) ? block : splitOnSpaces(block))
     ), []
   )
 }
