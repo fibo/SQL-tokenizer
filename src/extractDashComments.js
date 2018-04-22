@@ -10,15 +10,25 @@ function extractDashComments (sql: string): Array<string> {
 
     switch (index) {
       case 0:
-        blockIndexes.push(index)
+        if (isNewLine) {
+          blockIndexes.push(index, index + 1)
+        } else {
+          blockIndexes.push(index)
+        }
+
         break
       case array.length - 1:
-        blockIndexes.push(index + 1)
+        if (isNewLine) {
+          blockIndexes.push(index, index + 1)
+        } else {
+          blockIndexes.push(index + 1)
+        }
+
         break
       default:
         if (isNewLine) {
           isInsideComment = false
-          blockIndexes.push(index + 1)
+          blockIndexes.push(index, index + 1)
         }
 
         if ((currentTwoChars === '--') && !isInsideComment) {

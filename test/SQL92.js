@@ -7,9 +7,9 @@ const tokenize = require('../src/index')()
 test('SQL92 tokenizer', (t) => {
   t.deepEqual(tokenize('select'), ['select'])
   t.deepEqual(tokenize('-- select 1'), ['-- select 1'], 'dash comment, whole line')
-  /*
   t.deepEqual(tokenize(`select
 1`), ['select', '\n', '1'], 'newline')
+  /*
   t.deepEqual(tokenize('  select   1'), ['  ', 'select', '   ', '1'], 'spaces')
   t.deepEqual(tokenize("select 'hello world'"), ['select', ' ', "'hello world'"], 'single quotes')
   t.deepEqual(tokenize('select * from sales '), ['select', ' ', '*', ' ', 'from', ' ', 'sales', ' '], 'select star')

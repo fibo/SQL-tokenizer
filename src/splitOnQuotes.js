@@ -1,8 +1,7 @@
 function splitOnQuotes (sql: string): Array<string> {
   let blocks = []
 
-  // No SQL statement can start with a quoted word.
-  let isInsideQuotes = false
+  let isInsideQuotes = sql.substring(0, 1) === "'"
 
   sql.split("'").forEach(function (currentValue, index, array) {
     if (isInsideQuotes) {

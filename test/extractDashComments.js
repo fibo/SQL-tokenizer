@@ -7,7 +7,7 @@ test('extractDashComments', (t) => {
   t.deepEqual(extract(`
 select 1 -- ok
 from foo -- comment
-`), ['\nselect 1 ', '-- ok\n', 'from foo ', '-- comment\n'],
+`), ['\n', 'select 1 ', '-- ok', '\n', 'from foo ', '-- comment', '\n'],
   'comments on many rows')
 
   t.end()
