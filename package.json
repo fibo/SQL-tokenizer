@@ -14,7 +14,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SQL-JSON/tokenizer.git"
+    "url": "git+https://github.com/fibo/SQL-tokenizer.git"
   },
   "keywords": [
     "SQL",
@@ -29,9 +29,9 @@
   "author": "Gianluca Casati (http://g14n.info)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/SQL-JSON/tokenizer/issues"
+    "url": "https://github.com/fibo/SQL-tokenizer/issues"
   },
-  "homepage": "https://github.com/SQL-JSON/tokenizer#readme",
+  "homepage": "http://g14n.info/SQL-tokenizer",
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.2.2",
@@ -45,6 +45,6 @@
     "tape": "^4.9.0"
   },
   "dependencies": {
-    "sql92-operators": "^1.0.0"
+    "sql92-operators": "^1.0.1"
   }
 }
