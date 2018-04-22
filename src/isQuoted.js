@@ -1,6 +1,6 @@
 function isQuoted (block: string): boolean {
   const start = block[0]
-  const end = block.substring(block.length, 1)
+  const end = block[block.length - 1]
 
   const isDouble = start === '"' && end === '"'
 

@@ -17,8 +17,8 @@ test('SQL92 tokenizer', (t) => {
   t.deepEqual(tokenize(`select -- this is a comment
 1 -- on multiple lines`), [ 'select', ' ', '-- this is a comment', '\n', '1', ' ', '-- on multiple lines' ], 'dash comment, partial line')
   t.deepEqual(tokenize('select * from revenue'), ['select', ' ', '*', ' ', 'from', ' ', 'revenue'], 'basic query')
-  /*
   t.deepEqual(tokenize("select 'hello world'"), ['select', ' ', "'hello world'"], 'single quotes')
+  /*
 
   t.deepEqual(tokenize(`
 SELECT COUNT(    *) AS num
