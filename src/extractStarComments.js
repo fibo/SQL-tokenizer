@@ -4,7 +4,7 @@ function extractStarComments (sql: string): Array<string> {
 
   let isInsideComment = sql.substring(0, 2) === '/*'
 
-  sql.split('').forEach(function (currentValue, index, array) {
+  sql.split('').forEach((currentValue, index, array) => {
     const currentTwoChars = array.slice(index, index + 2).join('')
     const previousTwoChars = array.slice(index - 1, index + 1).join('')
 
