@@ -4,6 +4,7 @@
 
 [Installation](#installation) |
 [Usage](#usage) |
+[API](#api) |
 [License](#license)
 
 ## Installation
@@ -29,6 +30,27 @@ tokenize('select * from revenue')
 // ['select', ' ', '*', ' ', 'from', ' ', 'revenue']
 ```
 
+Quotes are handled properly.
+
+```javascript
+tokenize("select 'O''Reilly' as \"book shelf\"")
+// ['select', ' ', "'O''Reilly'", ' ', 'as', ' ', '"book shelf"']
+```
+
+The *tokenizer* function accepts an optional array of operators, which defaults to [SQL92-operators].
+The following example shows how to extend the operators list.
+
+```javascript
+const sql92Operators = require('sql92-operators')
+const tokenizer = require('sql-tokenizer')
+
+const operators = sql92Operators.concat('>>')
+
+const tokenize = tokenizer(operators)
+```
+
 ## License
 
 [MIT](http://g14n.info/mit-license/)
+
+[SQL92-operators]: http://g14n.info/SQL92-operators "SQL92 operators"

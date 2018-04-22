@@ -8,20 +8,7 @@ const splitOnSpaces = require('./splitOnSpaces')
 const splitOnSpecialChars = require('./splitOnSpecialChars')
 const splitOnOperators = require('./splitOnOperators')
 
-type SqlDialect = {
-  operators?: Array<string>
-}
-
-function sqlTokenizer (sqlDialect?: SqlDialect): (string) => Array<string> {
-  // Defaults to SQL92.
-  if (typeof sqlDialect === 'undefined') {
-    sqlDialect = {}
-  }
-
-  if (typeof sqlDialect.operators === 'undefined') {
-    sqlDialect.operators = sql92Operators
-  }
-
+function sqlTokenizer (operators?: Array<string>): (string) => Array<string> {
   return (sql: string): Array<string> => extractComments(sql).reduce(
     (tokens, block) => (
       tokens.concat(isComment(block) ? block : splitOnQuotes(block))
@@ -39,7 +26,7 @@ function sqlTokenizer (sqlDialect?: SqlDialect): (string) => Array<string> {
   ).reduce(
     (tokens, block) => (
       tokens.concat(
-        (isComment(block) || isQuoted(block)) ? block : splitOnOperators(sqlDialect.operators)(block))
+        (isComment(block) || isQuoted(block)) ? block : splitOnOperators(operators || sql92Operators)(block))
     ), []
   )
 }

@@ -18,6 +18,7 @@ test('SQL92 tokenizer', (t) => {
 1 -- on multiple lines`), [ 'select', ' ', '-- this is a comment', '\n', '1', ' ', '-- on multiple lines' ], 'dash comment, partial line')
   t.deepEqual(tokenize('select * from revenue'), ['select', ' ', '*', ' ', 'from', ' ', 'revenue'], 'basic query')
   t.deepEqual(tokenize("select 'hello world'"), ['select', ' ', "'hello world'"], 'single quotes')
+  t.deepEqual(tokenize("select 'O''Reilly' as \"book shelf\""), ['select', ' ', "'O''Reilly'", ' ', 'as', ' ', '"book shelf"'], 'mixed quotes')
   /*
 
   t.deepEqual(tokenize(`
