@@ -1,6 +1,6 @@
 // const keywords = require('sql92-keywords')
 // const operators = [
-//   '+', '::', '>', '>=', '<', '<=', '-', '%', '*', '/', ';', '||'
+//   '+', '::', '>', '>=', '<', '<=', '-', '%', '*', '/', '||'
 // ]
 
 const extractComments = require('./extractComments')
@@ -8,6 +8,7 @@ const isComment = require('./isComment')
 const isQuoted = require('./isQuoted')
 const splitOnQuotes = require('./splitOnQuotes')
 const splitOnSpaces = require('./splitOnSpaces')
+const splitOnSpecialChars = require('./splitOnSpecialChars')
 // const splitOnOperators = require('./splitOnOperators')
 
 function sqlTokenizer (/* spec: { keywords: Array<string> } */) {
@@ -19,6 +20,11 @@ function sqlTokenizer (/* spec: { keywords: Array<string> } */) {
     (tokens, block) => (
       tokens.concat(
         (isComment(block) || isQuoted(block)) ? block : splitOnSpaces(block))
+    ), []
+  ).reduce(
+    (tokens, block) => (
+      tokens.concat(
+        (isComment(block) || isQuoted(block)) ? block : splitOnSpecialChars(block))
     ), []
   )
 }
