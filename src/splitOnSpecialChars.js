@@ -1,4 +1,4 @@
-const specialChars = [',', ';']
+const specialChars = [',', ';', '(', ')', '=']
 
 function splitOnSpecialChars (sql: string): Array<string> {
   return sql.split('').reduce(

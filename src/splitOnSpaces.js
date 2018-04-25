@@ -1,14 +1,18 @@
+const isWhiteSpace = (character) => (
+  (character === ' ') || (character === '\t')
+)
+
 function splitOnSpaces (sql: string): Array<string> {
   return sql.split('').reduce(
     (blocks, character, index) => {
-      const isSpace = character === ' '
+      const isSpace = isWhiteSpace(character)
       const numBlocks = blocks.length
 
       if (numBlocks > 0) {
         const lastBlock = blocks[numBlocks - 1]
         // It is enough to check for first char, to know if last block
         // is a block of space characters.
-        const lastBlockIsSpace = lastBlock[0] === ' '
+        const lastBlockIsSpace = isWhiteSpace(lastBlock[0])
 
         const previousBlocks = blocks.slice(0, numBlocks - 1)
 

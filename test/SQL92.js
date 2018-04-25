@@ -18,35 +18,26 @@ test('SQL92 tokenizer', (t) => {
 1 -- on multiple lines`), [ 'select', ' ', '-- this is a comment', '\n', '1', ' ', '-- on multiple lines' ], 'dash comment, partial line')
   t.deepEqual(tokenize('select * from revenue'), ['select', ' ', '*', ' ', 'from', ' ', 'revenue'], 'basic query')
   t.deepEqual(tokenize("select 'hello world'"), ['select', ' ', "'hello world'"], 'single quotes')
-  t.deepEqual(tokenize("select 'O''Reilly' as \"book shelf\""), ['select', ' ', "'O''Reilly'", ' ', 'as', ' ', '"book shelf"'], 'mixed quotes')
-  /*
+  t.deepEqual(tokenize(`select 'O''Reilly' as "book shelf"`), ['select', ' ', "'O''Reilly'", ' ', 'as', ' ', '"book shelf"'], 'mixed quotes')
 
   t.deepEqual(tokenize(`
-SELECT COUNT(    *) AS num
+SELECT COUNT(*) AS num
 FROM (
 	SELECT *
 	FROM mytable
 	WHERE yyyymmdd=20170101
-		AND country IN ( 'IT', 'US' )
-		AND (
-			categoryid BETWEEN 100 AND 200
-			OR productname != 'icecream'
-		)
+		AND country IN ('IT','US')
 )
-  `), [
-    'SELECT', 'COUNT', '(', '*', ')', 'AS', 'num',
-    'FROM', '(',
-    'SELECT', '*',
-    'FROM', 'mytable',
-    'WHERE', 'yyyymmdd', '=', '20170101',
-    'AND', 'country', 'IN', '(', "'IT'", ',', "'US'", ')',
-    'AND', '(',
-    'categoryid', 'BETWEEN', '100', 'AND', '200',
-    'OR', 'productname', '!=', "'icecream'",
-    ')',
-    ')'
-  ], 'example query')
-*/
+`), [
+    '\n',
+    'SELECT', ' ', 'COUNT', '(', '*', ')', ' ', 'AS', ' ', 'num', '\n',
+    'FROM', ' ', '(', '\n',
+    '\t', 'SELECT', ' ', '*', '\n',
+    '\t', 'FROM', ' ', 'mytable', '\n',
+    '\t', 'WHERE', ' ', 'yyyymmdd', '=', '20170101', '\n',
+    '\t\t', 'AND', ' ', 'country', ' ', 'IN', ' ', '(', "'IT'", ',', "'US'", ')', '\n',
+    ')', '\n'
+  ], 'indentation is preserved')
 
   t.end()
 })
