@@ -4,7 +4,6 @@
 
 [Installation](#installation) |
 [Usage](#usage) |
-[API](#api) |
 [License](#license)
 
 ## Installation
@@ -17,10 +16,17 @@ npm install sql-tokenizer
 
 ## Usage
 
-Create a *tokenize* function.
+Create a *tokenize* function using CommonJS.
 
 ```javascript
 const tokenize = require('sql-tokenizer')()
+```
+
+You can also create a *tokenize* function with ES6 syntax.
+
+```javascript
+import tokenizer from 'sql-tokenizer'
+const tokenize = tokenizer()
 ```
 
 Turn SQL statement into tokens.

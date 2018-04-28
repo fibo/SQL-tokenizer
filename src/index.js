@@ -31,4 +31,4 @@ function sqlTokenizer (operators?: Array<string>): (string) => Array<string> {
   )
 }
 
-module.exports = sqlTokenizer
+module.exports = exports.default = sqlTokenizer
