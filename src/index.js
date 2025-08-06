@@ -1,2 +1,2 @@
-export { sqlOperators } from './operators.js'
+export { sqlSpecialChars } from './specialChars.js'
 export { sqlTokenizer } from './tokenizer.js'

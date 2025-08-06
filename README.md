@@ -60,20 +60,20 @@ FROM (
 // ')', '\n'
 ```
 
-### Custom operators
+### Special characters
 
-The *tokenizer* function accepts an optional array of operators, which defaults to `sqlOperators` exported by `sql-tokenizer` and defined in [operators.js](https://github.com/fibo/SQL-tokenizer/blob/main/src/operators.js).
+The *tokenizer* function accepts an optional array of special characters, which defaults to `sqlSpecialChars` exported by `sql-tokenizer` and defined in [specialChars.js](https://github.com/fibo/SQL-tokenizer/blob/main/src/specialChars.js).
 
-By **operator** here it means a sequence of characters, excluding letters. So for example `+`, `-`, `*`, `/` are operators included in the list. Instead `AND` and `OR` are not included, because they are made of letters.
+By **specialChar** here it means a sequence of characters, excluding letters. So for example `+`, `-`, `*`, `/` operators are included in the list. Instead `AND` and `OR` are not included, because they are made of letters.
 
-In case you need to add some operator to the list, you can do something like the following:
+In case you need to add some _custom special char_ to the list, you can do something like the following:
 
 ```javascript
-import { sqlOperators, sqlTokenizer } = from 'sql-tokenizer'
+import { sqlSpecialChars, sqlTokenizer } = from 'sql-tokenizer'
 
-const myCustomOperators = ['++', '??']
+const mySpecialChars = ['++', '??']
 
-const tokenize = tokenizer(sqlOperators.concat(myCustomOperators))
+const tokenize = tokenizer(sqlSpecialChars.concat(mySpecialChars))
 ```
 
 ## License

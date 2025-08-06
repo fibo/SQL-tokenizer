@@ -1,7 +1,7 @@
 import { strict as assert } from 'node:assert'
 import { test } from 'node:test'
 
-import { sqlTokenizer, sqlOperators } from 'sql-tokenizer'
+import { sqlTokenizer, sqlSpecialChars } from 'sql-tokenizer'
 
 test('sql-tokenizer', () => {
   const tokenize = sqlTokenizer()
@@ -90,14 +90,37 @@ FROM (
       ],
       description: 'indentation is preserved'
     },
+    {
+      input: `SELECT column_list
+FROM table1, table2
+WHERE table1.column = table2.column(+);
+`,
+      output: [
+        'SELECT', ' ', 'column_list', '\n',
+        'FROM', ' ', 'table1', ',', ' ', 'table2', '\n',
+        'WHERE', ' ', 'table1.column', ' ', '=', ' ', 'table2.column', '(+)', ';', '\n'
+      ],
+      description: 'Oracle Left Outer Join',
+    },
+    {
+      input: `SELECT column_list
+FROM table1, table2
+WHERE table1.column(+) = table2.column;`,
+      output: [
+        'SELECT', ' ', 'column_list', '\n',
+        'FROM', ' ', 'table1', ',', ' ', 'table2', '\n',
+        'WHERE', ' ', 'table1.column', '(+)', ' ', '=', ' ', 'table2.column', ';'
+      ],
+      description: 'Oracle Right Outer Join',
+    },
   ]) {
     assert.deepEqual(tokenize(input), output, description)
   }
 })
 
-test('custom operators', () => {
-  const myOperators = ['->', '->>']
-  const tokenize = sqlTokenizer(sqlOperators.concat(myOperators))
+test('Custom special chars', () => {
+  const mySpecialChars = ['->', '->>']
+  const tokenize = sqlTokenizer(sqlSpecialChars.concat(mySpecialChars))
 
   for (const { input, output, description } of [
     {
