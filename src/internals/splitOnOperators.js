@@ -1,9 +1,17 @@
-function splitOnOperators (operators: Array<string>): (string) => Array<string> {
+/**
+ * @param {string[]} operators
+ * @return {(string) => string[]}
+ */
+export const splitOnOperators = (operators) => {
   const maxOperatorLenght = operators.reduce((maxLenght, operator) => (
     Math.max(operator.length, maxLenght)
   ), 0)
 
-  return (sql: string): Array<string> => {
+  /**
+   * @param {string} sql
+   * @return {string[]}
+   */
+  return (sql) => {
     let skipNumChars = 0
 
     return sql.split('').reduce(
@@ -44,5 +52,3 @@ function splitOnOperators (operators: Array<string>): (string) => Array<string> 
     )
   }
 }
-
-module.exports = splitOnOperators

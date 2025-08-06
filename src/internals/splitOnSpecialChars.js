@@ -1,6 +1,10 @@
-const specialChars = [',', ';', '(', ')', '=']
+const specialChars = [',', ';', '(', ')']
 
-function splitOnSpecialChars (sql: string): Array<string> {
+/**
+ * @param {string} sql
+ * @returns {string[]}
+ */
+export const splitOnSpecialChars = (sql) => {
   return sql.split('').reduce(
     (blocks, character) => {
       const isSpecialChar = specialChars.indexOf(character) > -1
@@ -22,5 +26,3 @@ function splitOnSpecialChars (sql: string): Array<string> {
     }, []
   )
 }
-
-module.exports = splitOnSpecialChars

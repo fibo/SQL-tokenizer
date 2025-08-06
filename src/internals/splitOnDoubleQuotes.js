@@ -1,4 +1,8 @@
-function splitOnDoubleQuotes (sql: string): Array<string> {
+/**
+ * @param {string} sql
+ * @returns {string[]}
+ */
+export const splitOnDoubleQuotes = (sql) => {
   let isInsideQuotes = sql[0] === '"'
 
   return sql.split('"').reduce((blocks, block, index, array) => {
@@ -17,5 +21,3 @@ function splitOnDoubleQuotes (sql: string): Array<string> {
     }
   }, [])
 }
-
-module.exports = splitOnDoubleQuotes

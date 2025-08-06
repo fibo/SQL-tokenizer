@@ -1,5 +1,5 @@
-const splitOnDoubleQuotes = require('./splitOnDoubleQuotes')
-const splitOnSingleQuotes = require('./splitOnSingleQuotes')
+import { splitOnDoubleQuotes } from './splitOnDoubleQuotes.js'
+import { splitOnSingleQuotes } from './splitOnSingleQuotes.js'
 
 // TODO splitOnSingleQuotes and splitOnDoubleQuotes should be merged into
 // the same function, because a single quote inside a pair of double quotes
@@ -26,10 +26,12 @@ const splitOnSingleQuotes = require('./splitOnSingleQuotes')
 // }, [])
 //
 
-function splitOnQuotes (block: string): Array<string> {
+/**
+ * @param {string} block
+ * @returns {string[]}
+ */
+export const splitOnQuotes = (block) => {
   return splitOnSingleQuotes(block).reduce((blocks, block) => {
     return blocks.concat(splitOnDoubleQuotes(block))
   }, [])
 }
-
-module.exports = splitOnQuotes

@@ -1,4 +1,8 @@
-function isQuoted (block: string): boolean {
+/**
+ * @param {string} block
+ * @returns {boolean}
+ */
+export const isQuoted = (block) => {
   const start = block[0]
   const end = block[block.length - 1]
 
@@ -8,5 +12,3 @@ function isQuoted (block: string): boolean {
 
   return isDouble || isSingle
 }
-
-module.exports = isQuoted

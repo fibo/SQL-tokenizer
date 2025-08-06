@@ -1,10 +1,14 @@
-function extractStarComments (sql: string): Array<string> {
-  let blocks = []
-  let blockIndexes = []
+/**
+ * @param {string} sql
+ * @returns {string[]}
+ */
+export const extractStarComments = (sql) => {
+  const blocks = []
+  const blockIndexes = []
 
   let isInsideComment = sql.substring(0, 2) === '/*'
 
-  sql.split('').forEach((currentValue, index, array) => {
+  sql.split('').forEach((_, index, array) => {
     const currentTwoChars = array.slice(index, index + 2).join('')
     const previousTwoChars = array.slice(index - 1, index + 1).join('')
 
@@ -36,5 +40,3 @@ function extractStarComments (sql: string): Array<string> {
 
   return blocks
 }
-
-module.exports = extractStarComments

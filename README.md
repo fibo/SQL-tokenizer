@@ -1,6 +1,6 @@
 # SQL tokenizer
 
-> analyzes SQL statements and converts it into a list of tokens
+> Convert SQL statements into a list of tokens
 
 [Installation](#installation) |
 [Usage](#usage) |
@@ -10,23 +10,18 @@
 
 With [npm](https://npmjs.org/) do
 
-```bash
+```shell
 npm install sql-tokenizer
 ```
 
 ## Usage
 
-Create a *tokenize* function using CommonJS.
+Create a *tokenize* function.
 
 ```javascript
-const tokenize = require('sql-tokenizer')()
-```
+import { sqlTokenizer } from 'sql-tokenizer'
 
-You can also create a *tokenize* function with ES6 syntax.
-
-```javascript
-import tokenizer from 'sql-tokenizer'
-const tokenize = tokenizer()
+const tokenize = sqlTokenizer()
 ```
 
 Turn SQL statement into tokens.
@@ -65,20 +60,23 @@ FROM (
 // ')', '\n'
 ```
 
-The *tokenizer* function accepts an optional array of operators, which defaults to [SQL92-operators].
-The following example shows how to extend the SQL92 operators list with PostgreSQL bitwise operators.
+### Custom operators
+
+The *tokenizer* function accepts an optional array of operators, which defaults to `sqlOperators` exported by `sql-tokenizer` and defined in [operators.js](https://github.com/fibo/SQL-tokenizer/blob/main/src/operators.js).
+
+By **operator** here it means a sequence of characters, excluding letters. So for example `+`, `-`, `*`, `/` are operators included in the list. Instead `AND` and `OR` are not included, because they are made of letters.
+
+In case you need to add some operator to the list, you can do something like the following:
 
 ```javascript
-const sql92Operators = require('sql92-operators')
-const tokenizer = require('sql-tokenizer')
+import { sqlOperators, sqlTokenizer } = from 'sql-tokenizer'
 
-const operators = sql92Operators.concat(['&', '|', '#', '~' '>>', '<<'])
+const myCustomOperators = ['++', '??']
 
-const tokenize = tokenizer(operators)
+const tokenize = tokenizer(sqlOperators.concat(myCustomOperators))
 ```
 
 ## License
 
-[MIT](http://g14n.info/mit-license/)
+[MIT](https://fibo.github.io/mit-license/)
 
-[SQL92-operators]: http://g14n.info/SQL92-operators "SQL92 operators"

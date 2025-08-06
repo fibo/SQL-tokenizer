@@ -1,4 +1,8 @@
-function splitOnSingleQuotes (sql: string): Array<string> {
+/**
+ * @param {string} sql
+ * @returns {string[]}
+ */
+export const splitOnSingleQuotes = (sql) => {
   let isInsideQuotes = sql[0] === "'"
 
   return sql.split("'").reduce((blocks, block, index, array) => {
@@ -52,5 +56,3 @@ function splitOnSingleQuotes (sql: string): Array<string> {
     return accumulator
   }, [])
 }
-
-module.exports = splitOnSingleQuotes

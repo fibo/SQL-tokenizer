@@ -1,4 +1,7 @@
-function isComment (block: string): boolean {
+/** @param {string} block
+ * @returns {boolean}
+ */
+export const isComment = (block) => {
   const isDashComment = block.substring(0, 2) === '--'
 
   const isStarComment = (
@@ -8,5 +11,3 @@ function isComment (block: string): boolean {
 
   return isDashComment || isStarComment
 }
-
-module.exports = isComment
