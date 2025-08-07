@@ -1,11 +1,36 @@
 import { strict as assert } from 'node:assert'
 import { test } from 'node:test'
 
-import { splitOnSpaces as split } from '#internals/splitOnSpaces.js'
+import { splitOnSpaces } from '#internals/splitOnSpaces.js'
 
 test('splitOnSpaces', () => {
-  assert.deepEqual(split('select'), ['select'], 'single word')
-  assert.deepEqual(split('select 1'), ['select', ' ', '1'], 'single space')
-  assert.deepEqual(split('select  1'), ['select', '  ', '1'], 'multiple spaces')
-  assert.deepEqual(split('select	1'), ['select', '\t', '1'], 'tab')
+  for (const { input, output, description } of [
+    {
+      input: 'select 1',
+      output: ['select', ' ', '1'],
+      description: 'single space'
+    },
+    {
+      input: 'select   1',
+      output: ['select', '   ', '1'],
+      description: 'multiple spaces'
+    },
+    {
+      input: 'select	1',
+      output: ['select', '\t', '1'],
+      description: 'tab'
+    },
+    {
+      input: 'select 1 from foo',
+      output: ['select', ' ', '1', ' ', 'from', ' ', 'foo'],
+      description: 'single line with spaces'
+    },
+    {
+      input: 'select 1 from foo where bar = 2',
+      output: ['select', ' ', '1', ' ', 'from', ' ', 'foo', ' ', 'where', ' ', 'bar', ' ', '=', ' ', '2'],
+      description: 'multiple spaces and operators'
+    },
+  ]) {
+    assert.deepEqual(splitOnSpaces(input), output, description)
+  }
 })

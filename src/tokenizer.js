@@ -1,9 +1,9 @@
 import { sqlSpecialChars } from './specialChars.js'
 
 import { extractComments } from './internals/extractComments.js'
+import { extractQuotes } from './internals/extractQuotes.js'
 import { isComment } from './internals/isComment.js'
 import { isQuoted } from './internals/isQuoted.js'
-import { splitOnQuotes } from './internals/splitOnQuotes.js'
 import { splitOnSpaces } from './internals/splitOnSpaces.js'
 import { splitOnSpecialChars } from './internals/splitOnSpecialChars.js'
 
@@ -17,7 +17,7 @@ export const sqlTokenizer = (specialChars = sqlSpecialChars) => {
   return (sql) => extractComments(sql).reduce(
     (tokens, block) => {
       return tokens.concat(
-        isComment(block) ? block : splitOnQuotes(block)
+        isComment(block) ? block : extractQuotes(block)
       )
     }, []
   ).reduce(

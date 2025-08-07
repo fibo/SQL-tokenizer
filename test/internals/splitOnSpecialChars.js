@@ -40,7 +40,7 @@ test('splitOnSpecialChars', () => {
     },
     {
       input: 'SELECT column FROM table1, table2 WHERE table1.column(+) = table2.column',
-      output: [ 'SELECT column FROM table1', ',', ' table2 WHERE table1', '.', 'column', '(+)', ' ', '=', ' table2', '.', 'column' ],
+      output: ['SELECT column FROM table1', ',', ' table2 WHERE table1', '.', 'column', '(+)', ' ', '=', ' table2', '.', 'column'],
       description: 'Oracle join operator'
     }
   ]) {

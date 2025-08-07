@@ -30,7 +30,7 @@ import { splitOnSingleQuotes } from './splitOnSingleQuotes.js'
  * @param {string} block
  * @returns {string[]}
  */
-export const splitOnQuotes = (block) => {
+export const extractQuotes = (block) => {
   return splitOnSingleQuotes(block).reduce((blocks, block) => {
     return blocks.concat(splitOnDoubleQuotes(block))
   }, [])

@@ -1,13 +1,24 @@
 import { strict as assert } from 'node:assert'
 import { test } from 'node:test'
 
-import { extractDashComments as extract } from '#internals/extractDashComments.js'
+import { extractDashComments } from '#internals/extractDashComments.js'
 
 test('extractDashComments', () => {
-  assert.deepEqual(extract('select'), ['select'], 'single word')
-  assert.deepEqual(extract(`
+  for (const { input, output, description } of [
+    {
+      input: 'select 1 -- comment',
+      output: ['select 1 ', '-- comment'],
+      description: 'single line with inline comment'
+    },
+    {
+      input: `
 select 1 -- ok
 from foo -- comment
-`), ['\n', 'select 1 ', '-- ok', '\n', 'from foo ', '-- comment', '\n'],
-  'comments on many rows')
+`,
+      output: ['\n', 'select 1 ', '-- ok', '\n', 'from foo ', '-- comment', '\n'],
+      description: 'comments on many rows'
+    },
+  ]) {
+    assert.deepEqual(extractDashComments(input), output, description)
+  }
 })
