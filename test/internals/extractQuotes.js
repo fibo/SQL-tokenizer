@@ -30,8 +30,12 @@ test('extractQuotes', () => {
       output: ['select ', "'hello world'"],
       description: 'single quotes, last char is a quote',
     },
+    {
+      input: 'SELECT `column` FROM `table`',
+      output: ['SELECT ', '`column`', ' FROM ', '`table`'],
+      description: 'backticks',
+    },
   ]) {
     assert.deepEqual(extractQuotes(input), output, description)
   }
 })
-

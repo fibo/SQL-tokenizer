@@ -69,6 +69,16 @@ test('sql-tokenizer', () => {
       description: 'mixed quotes'
     },
     {
+      input: 'SELECT `t.column` FROM `table` AS t',
+      output: ['SELECT', ' ', '`t.column`', ' ', 'FROM', ' ', '`table`', ' ', 'AS', ' ', 't'],
+      description: 'backticks'
+    },
+    {
+      input: 'SELECT `SELECT` FROM `FROM` WHERE `WHERE` = 42',
+      output: ['SELECT', ' ', '`SELECT`', ' ', 'FROM', ' ', '`FROM`', ' ', 'WHERE', ' ', '`WHERE`', ' ', '=', ' ', '42'],
+      description: 'LOL'
+    },
+    {
       input: `
 SELECT COUNT(*) AS num
 FROM (

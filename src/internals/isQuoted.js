@@ -10,5 +10,7 @@ export const isQuoted = (block) => {
 
   const isSingle = start === "'" && end === "'"
 
-  return isDouble || isSingle
+  const isBacktick = start === '`' && end === '`'
+
+  return isDouble || isSingle || isBacktick
 }
