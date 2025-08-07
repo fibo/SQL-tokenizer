@@ -98,7 +98,7 @@ WHERE table1.column = table2.column(+);
       output: [
         'SELECT', ' ', 'column_list', '\n',
         'FROM', ' ', 'table1', ',', ' ', 'table2', '\n',
-        'WHERE', ' ', 'table1.column', ' ', '=', ' ', 'table2.column', '(+)', ';', '\n'
+        'WHERE', ' ', 'table1', '.', 'column', ' ', '=', ' ', 'table2', '.', 'column', '(+)', ';', '\n'
       ],
       description: 'Oracle Left Outer Join',
     },
@@ -109,7 +109,7 @@ WHERE table1.column(+) = table2.column;`,
       output: [
         'SELECT', ' ', 'column_list', '\n',
         'FROM', ' ', 'table1', ',', ' ', 'table2', '\n',
-        'WHERE', ' ', 'table1.column', '(+)', ' ', '=', ' ', 'table2.column', ';'
+        'WHERE', ' ', 'table1', '.', 'column', '(+)', ' ', '=', ' ', 'table2', '.', 'column', ';'
       ],
       description: 'Oracle Right Outer Join',
     },
