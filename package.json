@@ -11,6 +11,7 @@
     "#internals/*": "./src/internals/*"
   },
   "scripts": {
+    "install_precommit_hook": "echo '#!/bin/sh\nnpm test\n' > .git/hooks/pre-commit; chmod +x .git/hooks/pre-commit",
     "test": "node --test"
   },
   "repository": {
