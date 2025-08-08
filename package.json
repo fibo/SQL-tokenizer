@@ -1,6 +1,6 @@
 {
   "name": "sql-tokenizer",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Convert SQL statements into a list of tokens",
   "type": "module",
   "exports": "./src/index.js",
@@ -12,7 +12,7 @@
   },
   "scripts": {
     "install_precommit_hook": "echo '#!/bin/sh\nnpm test\n' > .git/hooks/pre-commit; chmod +x .git/hooks/pre-commit",
-    "test": "node --test"
+    "test": "node --test --experimental-sqlite"
   },
   "repository": {
     "type": "git",

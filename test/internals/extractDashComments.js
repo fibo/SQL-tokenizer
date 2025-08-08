@@ -1,9 +1,18 @@
 import { strict as assert } from 'node:assert'
+import { DatabaseSync } from 'node:sqlite'
 import { test } from 'node:test'
 
 import { extractDashComments } from '#internals/extractDashComments.js'
 
 test('extractDashComments', () => {
+  const database = new DatabaseSync(':memory:')
+
+  for (const statement of [
+    'CREATE TABLE foo (bar TEXT)',
+  ]) {
+    database.exec(statement)
+  }
+
   for (const { input, output, description } of [
     {
       input: 'select 1 -- comment',
@@ -19,6 +28,7 @@ from foo -- comment
       description: 'comments on many rows'
     },
   ]) {
+    database.prepare(input)
     assert.deepEqual(extractDashComments(input), output, description)
   }
 })

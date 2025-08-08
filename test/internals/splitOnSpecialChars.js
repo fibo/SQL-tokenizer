@@ -1,13 +1,22 @@
 import { strict as assert } from 'node:assert'
+import { DatabaseSync } from 'node:sqlite'
 import { test } from 'node:test'
 
 import { sqlSpecialChars } from 'sql-tokenizer'
 import { splitOnSpecialChars } from '#internals/splitOnSpecialChars.js'
 
 test('splitOnSpecialChars', () => {
+  const database = new DatabaseSync(':memory:')
+
+  for (const statement of [
+    'CREATE TABLE table1 (column1 INTEGER)',
+  ]) {
+    database.exec(statement)
+  }
+
   const split = splitOnSpecialChars(sqlSpecialChars)
 
-  for (const { input, output, description } of [
+  for (const { input, output, description, notSqlite } of [
     {
       input: ';',
       output: [';'],
@@ -29,8 +38,8 @@ test('splitOnSpecialChars', () => {
       description: 'single operator'
     },
     {
-      input: 'SELECT table.column FROM table WHERE table.column = 1',
-      output: ['SELECT table', '.', 'column FROM table WHERE table', '.' , 'column ', '=', ' 1'],
+      input: 'SELECT table1.column1 FROM table1 WHERE table1.column1 = 1',
+      output: ['SELECT table1', '.', 'column1 FROM table1 WHERE table1', '.' , 'column1 ', '=', ' 1'],
       description: 'dot operator'
     },
     {
@@ -39,11 +48,15 @@ test('splitOnSpecialChars', () => {
       description: 'two chars operator'
     },
     {
-      input: 'SELECT column FROM table1, table2 WHERE table1.column(+) = table2.column',
-      output: ['SELECT column FROM table1', ',', ' table2 WHERE table1', '.', 'column', '(+)', ' ', '=', ' table2', '.', 'column'],
-      description: 'Oracle join operator'
+      input: 'SELECT column1 FROM table1, table2 WHERE table1.column1(+) = table2.column1',
+      output: ['SELECT column1 FROM table1', ',', ' table2 WHERE table1', '.', 'column1', '(+)', ' ', '=', ' table2', '.', 'column1'],
+      description: 'Oracle join operator',
+      notSqlite: true
     }
   ]) {
+    if (!notSqlite) {
+      database.prepare(input)
+    }
     assert.deepEqual(split(input), output, description)
   }
 })

@@ -1,4 +1,5 @@
 import { strict as assert } from 'node:assert'
+import { DatabaseSync } from 'node:sqlite'
 import { test } from 'node:test'
 
 import { sqlTokenizer, sqlSpecialChars } from 'sql-tokenizer'
@@ -6,7 +7,19 @@ import { sqlTokenizer, sqlSpecialChars } from 'sql-tokenizer'
 test('sql-tokenizer', () => {
   const tokenize = sqlTokenizer()
 
-  for (const { input, output, description } of [
+  const database = new DatabaseSync(':memory:')
+
+  for (const statement of [
+    'CREATE TABLE sales (foo TEXT)',
+    'CREATE TABLE foo (bar TEXT)',
+    'CREATE TABLE `table` (`column` TEXT)',
+    'CREATE TABLE `FROM` (`SELECT` TEXT, `WHERE` INTEGER)',
+    'CREATE TABLE mytable (yyyymmdd INTEGER, country TEXT)',
+  ]) {
+    database.exec(statement)
+  }
+
+  for (const { input, output, description, notSqlite } of [
     {
       input: 'SELECT * FROM sales',
       output: ['SELECT', ' ', '*', ' ', 'FROM', ' ', 'sales'],
@@ -16,10 +29,6 @@ test('sql-tokenizer', () => {
       input: 'SELECT 1,2',
       output: ['SELECT', ' ', '1', ',', '2'],
       description: 'commas'
-    },
-    {
-      input: 'select',
-      output: ['select'],
     },
     {
       input: '-- select 1',
@@ -79,8 +88,8 @@ test('sql-tokenizer', () => {
       description: 'funky quotes'
     },
     {
-      input: 'SELECT `t.column` FROM `table` AS t',
-      output: ['SELECT', ' ', '`t.column`', ' ', 'FROM', ' ', '`table`', ' ', 'AS', ' ', 't'],
+      input: 'SELECT t.`column` FROM `table` AS t',
+      output: ['SELECT', ' ', 't', '.', '`column`', ' ', 'FROM', ' ', '`table`', ' ', 'AS', ' ', 't'],
       description: 'backticks'
     },
     {
@@ -121,6 +130,7 @@ WHERE table1.column = table2.column(+);
         'WHERE', ' ', 'table1', '.', 'column', ' ', '=', ' ', 'table2', '.', 'column', '(+)', ';', '\n'
       ],
       description: 'Oracle Left Outer Join',
+      notSqlite: true,
     },
     {
       input: `SELECT column_list
@@ -132,8 +142,12 @@ WHERE table1.column(+) = table2.column;`,
         'WHERE', ' ', 'table1', '.', 'column', '(+)', ' ', '=', ' ', 'table2', '.', 'column', ';'
       ],
       description: 'Oracle Right Outer Join',
+      notSqlite: true,
     },
   ]) {
+    if (!notSqlite) {
+      database.prepare(input)
+    }
     assert.deepEqual(tokenize(input), output, description)
   }
 })

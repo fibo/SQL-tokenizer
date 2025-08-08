@@ -1,9 +1,19 @@
 import { strict as assert } from 'node:assert'
+import { DatabaseSync } from 'node:sqlite'
 import { test } from 'node:test'
 
 import { extractBacktickQuotedString, extractSingleAndDoubleQuotes, extractQuotes } from '#internals/extractQuotes.js'
 
 test('extractQuotes', () => {
+  const database = new DatabaseSync(':memory:')
+
+  for (const statement of [
+    'CREATE TABLE `table` (`column` TEXT)',
+    'CREATE TABLE foo (bar TEXT)',
+  ]) {
+    database.exec(statement)
+  }
+
   for (const { input, output, description } of [
     {
       input: "SELECT `column`, 'foo' FROM `table`",
@@ -26,11 +36,21 @@ test('extractQuotes', () => {
       description: 'funky quotes'
     },
   ]) {
+    database.prepare(input)
     assert.deepEqual(extractQuotes(input), output, description)
   }
 })
 
 test('extractBacktickQuotedString', () => {
+  const database = new DatabaseSync(':memory:')
+
+  for (const statement of [
+    'CREATE TABLE mytable (`my num` TEXT)',
+    'CREATE TABLE `my table` (foo TEXT)',
+  ]) {
+    database.exec(statement)
+  }
+
   for (const { input, output, description } of [
     {
       input: 'select `my num` from mytable',
@@ -43,11 +63,20 @@ test('extractBacktickQuotedString', () => {
       description: 'backtick at end of input',
     },
   ]) {
+    database.prepare(input)
     assert.deepEqual(extractBacktickQuotedString(input), output, description)
   }
 })
 
 test('extractSingleAndDoubleQuotes', () => {
+  const database = new DatabaseSync(':memory:')
+
+  for (const statement of [
+    'CREATE TABLE mytable (foo TEXT)',
+  ]) {
+    database.exec(statement)
+  }
+
   for (const { input, output, description } of [
     {
       input: 'select 1 as "my num"',
@@ -80,6 +109,7 @@ test('extractSingleAndDoubleQuotes', () => {
       description: 'double quote inside single quotes',
     },
   ]) {
+    database.prepare(input)
     assert.deepEqual(extractSingleAndDoubleQuotes(input), output, description)
   }
 })

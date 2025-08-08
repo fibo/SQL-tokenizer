@@ -1,9 +1,18 @@
 import { strict as assert } from 'node:assert'
+import { DatabaseSync } from 'node:sqlite'
 import { test } from 'node:test'
 
 import { splitOnSpaces } from '#internals/splitOnSpaces.js'
 
 test('splitOnSpaces', () => {
+  const database = new DatabaseSync(':memory:')
+
+  for (const statement of [
+    'CREATE TABLE foo (bar TEXT)',
+  ]) {
+    database.exec(statement)
+  }
+
   for (const { input, output, description } of [
     {
       input: 'select 1',
@@ -31,6 +40,7 @@ test('splitOnSpaces', () => {
       description: 'multiple spaces and operators'
     },
   ]) {
+    database.prepare(input)
     assert.deepEqual(splitOnSpaces(input), output, description)
   }
 })
