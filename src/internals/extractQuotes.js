@@ -1,90 +1,108 @@
 /**
- * @param {string} sql
+ * @param {string} block
  * @returns {string[]}
  */
-export const extractQuotes = (sql) => {
-  if (!sql) return []
+export const extractQuotes = (block) => {
+  return extractSingleAndDoubleQuotes(block).reduce((blocks, item) => {
+    // Skip quoted strings, return them as is.
+    if (item.startsWith('"') || item.startsWith("'")) {
+      return blocks.concat(item)
+    }
+    // Otherwise, extract backtick quoted strings.
+    return blocks.concat(extractBacktickQuotedString(item))
+  }, [])
+}
+
+/**
+ * @param {string} block
+ * @returns {string[]}
+ */
+export const extractSingleAndDoubleQuotes = (block) => {
+  if (!block) return []
 
   const blocks = []
+  let currentBlock = ''
+  let isInsideSingleQuote = false
+  let isInsideDoubleQuote = false
 
-  let isInsideSingleQuotes = false
-    , isInsideDoubleQuotes = false
-    , isInsideBackticks = false
-    , currentBlock = ''
+  for (let i = 0; i < block.length; i++) {
+    const character = block[i]
+    const isLastCharacter = i === block.length - 1
 
-  for (let i = 0; i < sql.length; i++) {
-    const character = sql[i]
-    const nextCharacter = i < sql.length - 1 ? sql[i + 1] : ''
-
-    if (character === "'" && !isInsideDoubleQuotes && !isInsideBackticks) {
-      // Handle escaped single quotes (double single quotes)
-      if (nextCharacter === "'" && isInsideSingleQuotes) {
-        currentBlock += character + nextCharacter
-        i++ // Skip the next character as we've processed it
-        continue
-      }
-
-      // Toggle single quote state
-      if (isInsideSingleQuotes) {
-        // End of single quoted block
+    if (character === "'") {
+      if (isInsideDoubleQuote) {
         currentBlock += character
-        blocks.push(currentBlock)
-        currentBlock = ''
-        isInsideSingleQuotes = false
-      } else {
-        // Start of single quoted block
-        if (currentBlock) {
+      } else if (isInsideSingleQuote) {
+        // Single quote escapes single quote.
+        // For example to escale quote in O'Reilly string
+        //
+        //     SELECT 'O''Reilly'
+        //
+        const isEscaping = block[i + 1] === "'"
+        const isEscaped = block[i - 1] === "'"
+
+        if (isEscaping || isEscaped) {
+          currentBlock += character
+        } else {
+          // We are already inside a single quote, we close it.
+          currentBlock += character
           blocks.push(currentBlock)
           currentBlock = ''
+          isInsideSingleQuote = false
         }
-        currentBlock += character
-        isInsideSingleQuotes = true
-      }
-    } else if (character === '"' && !isInsideSingleQuotes && !isInsideBackticks) {
-      // Toggle double quote state
-      if (isInsideDoubleQuotes) {
-        // End of double quoted block
-        currentBlock += character
-        blocks.push(currentBlock)
-        currentBlock = ''
-        isInsideDoubleQuotes = false
       } else {
-        // Start of double quoted block
-        if (currentBlock) {
+        // If we are not inside a single quote, we open it
+        blocks.push(currentBlock)
+        isInsideSingleQuote = true
+        currentBlock = character
+      }
+    } else if (character === '"') { // Same logic applies to double quotes.
+      if (isInsideSingleQuote) {
+        currentBlock += character
+      } else if (isInsideDoubleQuote) {
+        // Double quote escapes double quote.
+        const isEscaping = block[i + 1] === '"'
+        const isEscaped = block[i - 1] === '"'
+
+        if (isEscaping || isEscaped) {
+          currentBlock += character
+        } else {
+          // We are already inside a double quote, we close it.
+          currentBlock += character
           blocks.push(currentBlock)
           currentBlock = ''
+          isInsideDoubleQuote = false
         }
-        currentBlock += character
-        isInsideDoubleQuotes = true
-      }
-    } else if (character === '`' && !isInsideSingleQuotes && !isInsideDoubleQuotes) {
-      // Toggle backtick state
-      if (isInsideBackticks) {
-        // End of backtick quoted block
-        currentBlock += character
-        blocks.push(currentBlock)
-        currentBlock = ''
-        isInsideBackticks = false
       } else {
-        // Start of backtick quoted block
-        if (currentBlock) {
-          blocks.push(currentBlock)
-          currentBlock = ''
-        }
-        currentBlock += character
-        isInsideBackticks = true
+        // If we are not inside a double quote, we open it
+        blocks.push(currentBlock)
+        isInsideDoubleQuote = true
+        currentBlock = character
       }
     } else {
-      // Regular character
       currentBlock += character
     }
-  }
 
-  // Add any remaining block
-  if (currentBlock) {
-    blocks.push(currentBlock)
+    if (isLastCharacter) {
+      blocks.push(currentBlock)
+      return blocks.filter(block => block !== '')
+    }
   }
-
-  // Filter out empty blocks
-  return blocks.filter(block => block !== '')
 }
+
+/**
+ * @param {string} block
+ * @returns {string[]}
+ */
+export const extractBacktickQuotedString = (block) => {
+  return block.split('`').reduce((blocks, item, index) => {
+    if (index % 2 === 0) {
+      // Even index: outside of backticks
+      return blocks.concat(item)
+    } else {
+      // Odd index: inside backticks
+      return blocks.concat('`' + item + '`')
+    }
+  }, []).filter(block => block !== '')
+}
+

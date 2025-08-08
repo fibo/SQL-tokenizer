@@ -6,8 +6,8 @@ import { extractStarComments } from '#internals/extractStarComments.js'
 test('extractStarComments', () => {
   for (const { input, output, description } of [
     {
-      input: '/* /**/',
-      output: ['/* /**/'],
+      input: 'SELECT /* /**/ 1',
+      output: ['SELECT ', '/* /**/', ' 1'],
       description: 'comment with special chars'
     },
     {

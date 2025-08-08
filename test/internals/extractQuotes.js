@@ -1,9 +1,53 @@
 import { strict as assert } from 'node:assert'
 import { test } from 'node:test'
 
-import { extractQuotes } from '#internals/extractQuotes.js'
+import { extractBacktickQuotedString, extractSingleAndDoubleQuotes, extractQuotes } from '#internals/extractQuotes.js'
 
 test('extractQuotes', () => {
+  for (const { input, output, description } of [
+    {
+      input: "SELECT `column`, 'foo' FROM `table`",
+      output: ['SELECT ', '`column`', ', ', "'foo'", ' FROM ', '`table`'],
+      description: 'backticks and quotes',
+    },
+    {
+      input: "SELECT `column`, \"O'Reilly\" FROM `table`",
+      output: ['SELECT ', '`column`', ', ', `"O'Reilly"`, ' FROM ', '`table`'],
+      description: 'backticks and mixed quotes',
+    },
+    {
+      input: `SELECT '''SELECT "foo" FROM bar WHERE quz = "ok"'''`,
+      output: ['SELECT ', `'''SELECT "foo" FROM bar WHERE quz = "ok"'''`],
+      description: 'triple quotes, complex case',
+    },
+    {
+      input: "INSERT INTO foo (bar) VALUES ('SELECT `funkyColumnName` FROM quux WHERE thing = ''blabla'' AND answer=42')",
+      output: ['INSERT INTO foo (bar) VALUES (', "'SELECT `funkyColumnName` FROM quux WHERE thing = ''blabla'' AND answer=42'", ')'],
+      description: 'funky quotes'
+    },
+  ]) {
+    assert.deepEqual(extractQuotes(input), output, description)
+  }
+})
+
+test('extractBacktickQuotedString', () => {
+  for (const { input, output, description } of [
+    {
+      input: 'select `my num` from mytable',
+      output: ['select ', "`my num`", ' from mytable'],
+      description: 'backtick indentifier',
+    },
+    {
+      input: 'select * from `my table`',
+      output: ['select * from ', "`my table`"],
+      description: 'backtick at end of input',
+    },
+  ]) {
+    assert.deepEqual(extractBacktickQuotedString(input), output, description)
+  }
+})
+
+test('extractSingleAndDoubleQuotes', () => {
   for (const { input, output, description } of [
     {
       input: 'select 1 as "my num"',
@@ -11,8 +55,8 @@ test('extractQuotes', () => {
       description: 'double quotes',
     },
     {
-      input: "'alias'",
-      output: ["'alias'"],
+      input: "SELECT 1 AS 'alias'",
+      output: ['SELECT 1 AS ', "'alias'"],
       description: 'single quoted word',
     },
     {
@@ -31,11 +75,12 @@ test('extractQuotes', () => {
       description: 'single quotes, last char is a quote',
     },
     {
-      input: 'SELECT `column` FROM `table`',
-      output: ['SELECT ', '`column`', ' FROM ', '`table`'],
-      description: 'backticks',
+      input: `SELECT 'text " ';`,
+      output: ['SELECT ', `'text " '`, ';'],
+      description: 'double quote inside single quotes',
     },
   ]) {
-    assert.deepEqual(extractQuotes(input), output, description)
+    assert.deepEqual(extractSingleAndDoubleQuotes(input), output, description)
   }
 })
+

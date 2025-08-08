@@ -69,6 +69,16 @@ test('sql-tokenizer', () => {
       description: 'mixed quotes'
     },
     {
+      input: `SELECT 'SELECT ''Hello'''`,
+      output: ["SELECT", " ", "'SELECT ''Hello'''"],
+      description: 'triple quotes'
+    },
+    {
+      input: "INSERT INTO foo (bar) VALUES ('SELECT `funkyColumnName` FROM quux WHERE thing = ''blabla'' AND answer=42')",
+      output: ['INSERT', ' ', 'INTO', ' ', 'foo', ' ', '(', 'bar', ')', ' ', 'VALUES', ' ', '(', "'SELECT `funkyColumnName` FROM quux WHERE thing = ''blabla'' AND answer=42'", ')'],
+      description: 'funky quotes'
+    },
+    {
       input: 'SELECT `t.column` FROM `table` AS t',
       output: ['SELECT', ' ', '`t.column`', ' ', 'FROM', ' ', '`table`', ' ', 'AS', ' ', 't'],
       description: 'backticks'

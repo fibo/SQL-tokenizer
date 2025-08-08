@@ -14,18 +14,18 @@ test('splitOnSpecialChars', () => {
       description: 'single semicolon'
     },
     {
-      input: '12, 2',
-      output: ['12', ',', ' 2'],
+      input: 'select 12, 2',
+      output: ['select 12', ',', ' 2'],
       description: 'comma'
     },
     {
-      input: '1;2',
-      output: ['1', ';', '2'],
+      input: 'select 1; select 2',
+      output: ['select 1', ';', ' select 2'],
       description: 'semicolon'
     },
     {
-      input: '1+2',
-      output: ['1', '+', '2'],
+      input: 'select 1+2',
+      output: ['select 1', '+', '2'],
       description: 'single operator'
     },
     {
@@ -34,8 +34,8 @@ test('splitOnSpecialChars', () => {
       description: 'dot operator'
     },
     {
-      input: '1 >=4',
-      output: ['1 ', '>=', '4'],
+      input: 'select 1 >=4',
+      output: ['select 1 ', '>=', '4'],
       description: 'two chars operator'
     },
     {
