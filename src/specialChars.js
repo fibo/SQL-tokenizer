@@ -1,6 +1,3 @@
-/**
- * List of special SQL characters.
- */
 export const sqlSpecialChars = [
   // Generic special characters
   '.', ',', ';', '(', ')',

@@ -3,6 +3,7 @@
   "version": "1.0.4",
   "description": "Convert SQL statements into a list of tokens",
   "type": "module",
+  "types": "./src/sql-tokenizer.d.ts",
   "exports": "./src/index.js",
   "engines": {
     "node": ">=14"
