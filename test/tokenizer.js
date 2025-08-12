@@ -144,6 +144,16 @@ WHERE table1.column(+) = table2.column;`,
       description: 'Oracle Right Outer Join',
       notSqlite: true,
     },
+    {
+      input: 'SELECT*FROM`table`',
+      output: ['SELECT', '*', 'FROM', '`table`'],
+      description: 'no spaces'
+    },
+    {
+      input: 'SELECT/* comment */bar/* comment */FROM`foo`',
+      output: [ 'SELECT', '/* comment */', 'bar', '/* comment */', 'FROM', '`foo`' ],
+      description: 'no spaces with comments'
+    },
   ]) {
     if (!notSqlite) {
       database.prepare(input)
