@@ -1,9 +1,9 @@
 {
   "name": "sql-tokenizer",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Convert SQL statements into a list of tokens",
   "type": "module",
-  "types": "./src/sql-tokenizer.d.ts",
+  "types": "./src/index.d.ts",
   "exports": "./src/index.js",
   "engines": {
     "node": ">=14"
