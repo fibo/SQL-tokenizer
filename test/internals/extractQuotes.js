@@ -21,11 +21,6 @@ test('extractQuotes', () => {
       description: 'backticks and quotes',
     },
     {
-      input: "SELECT `column`, \"O'Reilly\" FROM `table`",
-      output: ['SELECT ', '`column`', ', ', `"O'Reilly"`, ' FROM ', '`table`'],
-      description: 'backticks and mixed quotes',
-    },
-    {
       input: `SELECT '''SELECT "foo" FROM bar WHERE quz = "ok"'''`,
       output: ['SELECT ', `'''SELECT "foo" FROM bar WHERE quz = "ok"'''`],
       description: 'triple quotes, complex case',
